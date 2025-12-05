@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
+import { motion } from "framer-motion"
 import {
   Mail,
   MapPin,
@@ -16,8 +16,14 @@ import {
   Facebook,
   MessageSquare,
   Twitch,
+  Smartphone,
+  Clock,
+  CheckCircle2,
 } from "lucide-react"
-import { Card } from "@/components/ui/card"
+
+/* -------------------------------------------------------------------------- */
+/* DATA CONFIGURATION                                                         */
+/* -------------------------------------------------------------------------- */
 
 const SOCIAL_ICONS = {
   linkedin: Linkedin,
@@ -44,66 +50,40 @@ interface SocialLink {
 const CONTACT_INFO = {
   name: "배서연",
   title: "단국대학교 도시계획·부동산학부",
-  company: "",
-  experience: "Junior",
+  role: "Junior",
   email: "kimbob206@gmail.com",
-  website: "",
   location: "서울시 양천구",
-  workTime: "평일 09:00 - 18:00",
+  workTime: "Always Open",
   responseTime: "24시간 이내 응답",
-  sectionTitle: "연락처",
-  sectionSubtitle:
-    "프로젝트 문의나 협업 제안을 기다리고 있습니다. 편하신 방법으로 연락 주세요!",
-  qrTitle: "QR 코드로 연락처 저장",
-  bottomSubMessage: "시간 내어 제 포트폴리오를 살펴봐 주셔서 감사합니다.",
   qrContent: ["name", "email", "location"] as const,
 }
 
 const SOCIAL_LINKS: SocialLink[] = [
-  {
-    name: "LinkedIn",
-    icon: "linkedin",
-    url: "https://www.linkedin.com/in/seoyeon0825",
-  },
-  {
-    name: "GitHub",
-    icon: "github",
-    url: "https://github.com/seoyeon0825",
-  },
-  {
-    name: "Email",
-    icon: "mail",
-    url: "mailto:kimbob206@gmail.com",
-  },
-  {
-    name: "Message",
-    icon: "message",
-    url: "https://www.instagram.com/?flo=true",
-  },
+  { name: "LinkedIn", icon: "linkedin", url: "https://www.linkedin.com/in/seoyeon0825" },
+  { name: "GitHub", icon: "github", url: "https://github.com/seoyeon0825" },
+  { name: "Email", icon: "mail", url: "mailto:kimbob206@gmail.com" },
+  { name: "Instagram", icon: "message", url: "https://www.instagram.com/?flo=true" },
 ]
 
-// vCard 생성
+/* -------------------------------------------------------------------------- */
+/* VCARD LOGIC                                                                */
+/* -------------------------------------------------------------------------- */
+
 function generateVCard() {
   const info = CONTACT_INFO
-  const qrContent =
-    info.qrContent.length > 0 ? info.qrContent : (["name", "email"] as const)
-
+  const qrContent = info.qrContent.length > 0 ? info.qrContent : (["name", "email"] as const)
   let vCard = "BEGIN:VCARD\nVERSION:3.0\n"
 
   if (qrContent.includes("name")) {
-    const displayName = info.title ? `${info.name} (${info.title})` : info.name
-    vCard += `FN:${displayName}\n`
-    vCard += `N:${info.name};;;;\n`
+    vCard += `FN:${info.name}\nN:${info.name};;;;\n`
+    vCard += `TITLE:${info.title}\n`
   }
-
   if (qrContent.includes("email")) {
     vCard += `EMAIL:${info.email}\n`
   }
-
   if (qrContent.includes("location")) {
     vCard += `ADR;TYPE=WORK:;;${info.location};;;;\n`
   }
-
   const activeSocialLinks = SOCIAL_LINKS.filter((l) => l.url)
   if (activeSocialLinks.length > 0) {
     let note = "SNS:\\n"
@@ -112,218 +92,238 @@ function generateVCard() {
     })
     vCard += `NOTE:${note}\n`
   }
-
   vCard += "END:VCARD"
   return vCard
 }
 
 const VCARD_STRING = generateVCard()
 const QR_CODE_URL = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(
-  VCARD_STRING.trim(),
+  VCARD_STRING.trim()
 )}`
 
+/* -------------------------------------------------------------------------- */
+/* ANIMATION VARIANTS                                                         */
+/* -------------------------------------------------------------------------- */
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay, duration: 0.6, ease: "easeOut" },
+  }),
+}
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    scale: 1,
+    transition: { delay, duration: 0.6, ease: "easeOut" },
+  }),
+}
+
+/* -------------------------------------------------------------------------- */
+/* MAIN COMPONENT                                                             */
+/* -------------------------------------------------------------------------- */
+
 export function Contact() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    const target = sectionRef.current
-    if (!target) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.unobserve(entry.target)
-        }
-      },
-      { threshold: 0.2 },
-    )
-
-    observer.observe(target)
-    return () => observer.disconnect()
-  }, [])
-
   return (
     <section
       id="contact"
-      ref={sectionRef}
-      className={`relative border-t border-slate-200 
-        bg-slate-50
-        pt-20 pb-24 sm:pb-28 
-        transition-all duration-1000 ease-out ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
+      className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-slate-100 py-24 sm:py-32"
     >
-      {/* 자연스러운 한 톤 어둡게 오버레이 */}
-      <div className="absolute inset-0 bg-black/2 pointer-events-none"></div>
+      {/* BACKGROUND */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div
+          className="absolute inset-0 opacity-[0.4]"
+          style={{
+            backgroundImage: `linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(to right, #cbd5e1 1px, transparent 1px)`,
+            backgroundSize: "40px 40px",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-100 via-slate-50/80 to-transparent" />
+      </div>
 
-      {/* 메인 콘텐츠 컨테이너 */}
-      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 xl:px-0">
-        {/* ===== 헤더 ===== */}
-        <header className="mb-10 lg:mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <span className="text-[12px] font-medium tracking-[0.18em] text-slate-600">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-8">
+        {/* ------------------ SECTION HEADER ------------------ */}
+        <motion.div
+          className="mb-16 text-left"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInUp}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1 mb-4 backdrop-blur-sm shadow-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            <span className="text-xs font-bold tracking-widest text-slate-600 uppercase">
               CONTACT
             </span>
           </div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-3">
+            Get In Touch
+          </h2>
+          <p className="text-lg text-slate-600 max-w-2xl leading-relaxed">
+            새로운 프로젝트 제안이나 협업 기회는 언제나 환영합니다.
+            <br className="hidden sm:block" />
+            편하신 방법으로 연락해 주세요.
+          </p>
+        </motion.div>
 
-          <div className="mt-5 space-y-4">
-            <h2 className="text-4xl sm:text-5xl lg:text-[2.9rem] font-semibold tracking-tight text-slate-900">
-              {CONTACT_INFO.sectionTitle}
-            </h2>
-            <p className="text-[16px] sm:text-[18px] lg:text-[20px] text-slate-600 max-w-3xl leading-relaxed">
-              {CONTACT_INFO.sectionSubtitle}
-            </p>
-          </div>
-        </header>
+        {/* ------------------ MAIN CARD ------------------ */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={scaleIn}
+          className="relative rounded-[2.2rem] border border-white/60 bg-white/80 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] backdrop-blur-md overflow-hidden"
+        >
+          <div className="grid lg:grid-cols-[1.4fr_1fr] divide-y lg:divide-y-0 lg:divide-x divide-slate-200/60">
+            {/* LEFT: Contact Details */}
+            <div className="p-7 sm:p-10 lg:p-12 flex flex-col justify-center">
+              {/* Profile Header */}
+              <div className="flex items-center gap-5 mb-7">
+                <div className="relative w-18 h-18 sm:w-20 sm:h-20 flex-shrink-0 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shadow-inner">
+                  <Image
+                    src="/seoyeon_character.png"
+                    alt="Profile"
+                    fill
+                    className="object-contain p-1"
+                  />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-slate-900">
+                    {CONTACT_INFO.name}
+                  </h3>
+                  <p className="text-emerald-600 font-medium text-sm sm:text-base mt-0.5">
+                    {CONTACT_INFO.title}
+                  </p>
+                  <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
+                    {CONTACT_INFO.role}
+                  </p>
+                </div>
+              </div>
 
-        {/* ===== 메인 영역 (단일 카드) ===== */}
-        <div className="relative">
-          <Card
-            className={`relative border border-slate-200/80 bg-white/95 rounded-[32px] 
-              px-6 sm:px-8 py-9 sm:py-10 
-              shadow-[0_12px_26px_rgba(15,23,42,0.08)] 
-              transition-all duration-1000 ease-out ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              }`}
-          >
-            <div className="grid lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-8 lg:gap-12 xl:gap-16">
-              {/* ===== 좌측: 프로필 + 이메일 + 소셜 ===== */}
-              <div className="flex flex-col justify-center space-y-6 pl-6 sm:pl-7 lg:pl-9">
-                {/* 프로필 영역 */}
-                <div className="flex items-start gap-5 sm:gap-6 scale-110 origin-left">
-                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-2xl bg-slate-900/5 overflow-hidden">
-                    <Image
-                      src="/seoyeon_character.png"
-                      alt={`${CONTACT_INFO.name} 프로필 이미지`}
-                      fill
-                      className="object-contain"
-                    />
+              {/* Info List */}
+              <div className="space-y-4 mb-7">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-600">
+                    <Mail className="w-4 h-4" />
                   </div>
-
-                  <div className="flex-1 space-y-3">
-                    <div>
-                      <h3 className="text-2xl sm:text-[1.6rem] font-semibold text-slate-900">
-                        {CONTACT_INFO.name}
-                      </h3>
-                      <p className="mt-1 text-sm sm:text-[15px] text-emerald-700">
-                        {CONTACT_INFO.title}
-                        {CONTACT_INFO.company ? ` · ${CONTACT_INFO.company}` : ""}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2 text-xs sm:text-[13px] text-slate-600">
-                      <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-1.5" />
-                        {CONTACT_INFO.experience} · Real Estate
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5">
-                        <MapPin className="h-3.5 w-3.5 text-emerald-600" />
-                        서울시
-                      </span>
-                      <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5">
-                        {CONTACT_INFO.responseTime}
-                      </span>
-                    </div>
+                  <div>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+                      Email
+                    </p>
+                    <a
+                      href={`mailto:${CONTACT_INFO.email}`}
+                      className="text-base sm:text-lg font-semibold text-slate-900 hover:text-emerald-600 transition-colors"
+                    >
+                      {CONTACT_INFO.email}
+                    </a>
                   </div>
                 </div>
-              
-                {/* 메인 CTA – 이메일 */}
-                <a
-                  href={`mailto:${CONTACT_INFO.email}`}
-                  className="group rounded-2xl bg-slate-900/90 text-slate-50 px-5 py-4 sm:px-6 sm:py-4 flex items-center justify-between gap-4 cursor-pointer transition-all hover:bg-slate-900"
-                >
-                  <div className="space-y-1">
-                    <p className="text-[12px] uppercase tracking-[0.18em] text-slate-300">
-                      PRIMARY CHANNEL
+
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-600">
+                    <MapPin className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+                      Location
                     </p>
-                    <p className="text-sm sm:text-[15px] font-medium">
-                      {CONTACT_INFO.email}
+                    <p className="text-sm sm:text-base font-medium text-slate-900">
+                      {CONTACT_INFO.location}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 text-[12px] sm:text-sm font-medium">
-                    이메일 보내기
-                    <ArrowRight className="h-4 w-4 translate-x-0 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 pt-1">
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500">
+                    <Clock className="w-4 h-4 text-emerald-500" />
+                    {CONTACT_INFO.responseTime}
                   </div>
-                </a>
-
-                {/* 구분선 */}
-                <div className="border-t border-slate-200/70" />
-
-                {/* 소셜 아이콘 스트립 */}
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm sm:text-[16px] font-semibold text-slate-700 ml-1 sm:ml-2.5">
-                    Social Channels
-                  </p>
-                  <div className="flex items-center gap-2.5">
-                    {SOCIAL_LINKS.filter((link) => link.url).map((link, index) => {
-                      const Icon = SOCIAL_ICONS[link.icon]
-                      const isEmail =
-                        link.icon === "mail" || link.url.startsWith("mailto:")
-
-                      return (
-                        <a
-                          key={index}
-                          href={link.url}
-                          target={isEmail ? undefined : "_blank"}
-                          rel={isEmail ? undefined : "noopener noreferrer"}
-                          className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-slate-50/80 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-colors"
-                        >
-                          <Icon className="h-4 w-4" />
-                        </a>
-                      )
-                    })}
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    Open to Work
                   </div>
                 </div>
               </div>
 
-              {/* ===== 우측: QR 영역 ===== */}
-<div className="mt-4 lg:mt-0 lg:pl-4 lg:pr-20 flex flex-col justify-center items-center lg:items-end">
-                <div className="space-y-5 w-full lg:w-auto flex flex-col items-center lg:items-end">
-                  <div className="space-y-2 text-center lg:text-center">
-                    <h4 className="text-lg sm:text-xl font-semibold text-slate-900">
-                      {CONTACT_INFO.qrTitle}
-                    </h4>
-                    <p className="text-sm text-slate-600">
-                      카메라로 스캔 시 선택한 정보가 연락처로 저장됩니다.
-                    </p>
-                  </div>
-
-                  <div className="pr-3.5 flex justify-center lg:justify-end">
-                    <div className="border border-slate-200 bg-slate-50 p-3 rounded-2xl">
-                      <Image
-                        src={QR_CODE_URL}
-                        alt="연락처 QR 코드"
-                        width={280}
-                        height={280}
-                        className="w-[200px] h-[200px] sm:w-[220px] sm:h-[220px]"
-                        style={{ imageRendering: "crisp-edges" }}
-                        unoptimized
-                      />
-                    </div>
-                  </div>
+              {/* Social Buttons */}
+              <div>
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">
+                  Social Channels
+                </p>
+                <div className="flex flex-wrap gap-2.5">
+                  {SOCIAL_LINKS.map((link, idx) => {
+                    const Icon = SOCIAL_ICONS[link.icon]
+                    return (
+                      <a
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-md transition-all active:scale-95"
+                      >
+                        <Icon className="w-4 h-4 text-slate-600 group-hover:text-slate-900" />
+                        <span className="text-xs sm:text-sm font-medium text-slate-600 group-hover:text-slate-900">
+                          {link.name}
+                        </span>
+                      </a>
+                    )
+                  })}
                 </div>
               </div>
             </div>
-          </Card>
-        </div>
 
-        {/* ===== 하단 메시지 ===== */}
-        <div
-          className={`mt-37 text-center transition-all duration-1000 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-          style={{ transitionDelay: isVisible ? "0.15s" : "0s" }}
+            {/* RIGHT: QR Code */}
+            <div className="bg-slate-50/50 p-7 sm:p-10 flex flex-col items-end justify-center text-right relative overflow-hidden">
+              {/* Decorative Circle */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl" />
+
+<div className="relative z-10 bg-white p-3.5 rounded-2xl shadow-lg border border-slate-100 mb-4 group cursor-pointer transition-transform hover:-translate-y-1 translate-x-[-70px]">
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Image
+                  src={QR_CODE_URL}
+                  alt="Contact QR Code"
+                  width={200}
+                  height={200}
+                  className="rounded-xl mix-blend-multiply"
+                  unoptimized
+                />
+              </div>
+
+              <div className="relative z-10 space-y-1.5 translate-x-[-40px]">
+                <h4 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <Smartphone className="w-5 h-5 text-emerald-500" />
+                  Scan to Save
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-500">
+                  카메라로 스캔하여 연락처를 바로 저장할 수 있습니다.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ------------------ FOOTER MESSAGE ------------------ */}
+        <motion.div
+          className="mt-20 text-center space-y-1.5"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
         >
-          <p className="text-lg sm:text-2xl font-semibold text-slate-600 mb-2">
-            제 작업과 여정을 찾아와 주셔서 감사합니다.
+          <p className="text-xl sm:text-2xl font-serif italic text-slate-700">
+            "제 작업과 여정을 찾아와 주셔서 감사합니다."
           </p>
-          <p className="text-sm sm:text-base text-slate-500">
+          <p className="text-xs sm:text-sm text-slate-400 uppercase tracking-widest">
             앞으로의 가능성을 함께 만들어갈 수 있기를 기대합니다.
           </p>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
