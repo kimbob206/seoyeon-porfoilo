@@ -10,7 +10,7 @@ const CONTACT_INFO = {
 
 export function Footer() {
   return (
-    <footer className="bg-slate-900/90 text-white pb-20 text-xs"> {/* 전체 글자 크기 축소 */}
+    <footer className="bg-slate-900/100 text-white pb-20 text-xs"> {/* 전체 글자 크기 축소 */}
       {/* 전체 폭 상단 가로선 */}
       <div className="w-full border-t border-slate-700/60" />
 

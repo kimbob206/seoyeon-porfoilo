@@ -26,34 +26,53 @@ const TIMELINE_DATA = [
   {
     icon: GraduationCap,
     title: "단국대학교 죽전캠퍼스",
-    period: "2023.03 ~ 2027.02(예정)",
+    period: "2023.03",
     description: "부동산학 전공 및 경영학 복수전공",
     category: "Education",
   },
   {
     icon: Award,
     title: "학년수석 달성",
-    period: "2024.03 ~ 2024.12",
+    period: "2024",
     description: "2학년 1·2학기 연속 학년석차 1등",
     category: "Award",
   },
   {
     icon: Users,
-    title: "부동산 학회 및 연합 학술 활동",
-    period: "2024.03 ~ 2025.01",
-    description: "URID 학회 활동 및 연합학술제 우수 프로젝트(경매 권리분석 보고서) 선정",
+    title: (
+    <>
+      부동산 학회 및
+      <br />
+      연합 학술 활동
+    </>
+  ),
+    period: "2024.03 - 2025.01",
+    description:
+      "건국·단국·중앙대 연합학술제 우수프로젝트 선정",
     category: "Activity",
   },
   {
     icon: Briefcase,
-    title: "신탁사 실무 및 금융 교육 이수",
-    period: "2025.07 ~ 2025.09",
-    description: "무궁화신탁 인턴십 및 부동산운용 직무교육 이수",
+    title: (
+    <>
+      무궁화신탁 인턴십 및
+      <br />
+      금융교육 이수
+    </>
+  ),
+    period: "2025.07 - 09",
+    description: "타임금융교육원 부동산운용 직무교육",
     category: "Career",
   },
   {
     icon: Star,
-    title: "서울부동산포럼 장학생 선정",
+    title: (
+    <>
+      서울부동산포럼
+      <br />
+      장학생 선정
+    </>
+  ),
     period: "2025.11",
     description: "제13회 우수 장학생 선정",
     category: "Award",
@@ -62,7 +81,6 @@ const TIMELINE_DATA = [
     icon: Building2,
     title: "무궁화신탁 인턴십 (예정)",
     period: "2025.12.15 ~",
-    description: "신탁사 실무 경험 지속",
     category: "Future",
     isFuture: true, // 미래 일정 스타일링용 플래그
   },
@@ -72,21 +90,21 @@ const SKILLS = [
   {
     icon: BarChart3,
     title: "Financial Modeling",
-    percentage: 80,
+    percentage: 70,
     description:
       "DCF, IRR/NPV, Cap-rate, NOI 모델링, PF 시나리오 분석을 통해 자산의 현금흐름과 수익 구조를 정교한 숫자로 설계합니다.",
   },
   {
     icon: Users,
     title: "Real Estate Analysis",
-    percentage: 95,
+    percentage: 90,
     description:
       "국토부 실거래가·토지이음·개별공시지가 등 공공데이터를 활용해 입지·수요·임대차 구조를 분석하고 리스크 요소를 검토합니다.",
   },
   {
     icon: Rocket,
     title: "PF Documentation",
-    percentage: 90,
+    percentage: 85,
     description:
       "IM·시장 리서치·PERT/CPM 일정 분석 등 의사결정에 필요한 보고서를 체계적으로 제작합니다.",
   },
@@ -122,7 +140,7 @@ const STORY_PARAGRAPHS: React.ReactNode[] = [
       상업용 부동산의 가치는 단순히 건물의 크기나 입지로만 결정되지 않는다
     </span>
     고 믿습니다. 운영 방식, 임대 구조, 자본 구조가 함께 설계될 때 비로소 자산의
-    진짜 가치가 드러난다고 생각합니다.
+    진짜 가치가 드러난다고 생각합니다. 
   </>,
   <>
     대학교 2학년 때 참여한 상업시설 분석 프로젝트에서{" "}
@@ -187,7 +205,7 @@ const staggerContainer = {
 /* SUB COMPONENTS                                 */
 /* -------------------------------------------------------------------------- */
 
-// 1. Achievements Slider (기존 유지)
+// 1. Achievements Slider
 function AchievementsSlider() {
   const scrollRef = React.useRef<HTMLDivElement | null>(null)
 
@@ -202,7 +220,43 @@ function AchievementsSlider() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative group">
+      {/* 왼쪽 버튼 */}
+      <button
+        type="button"
+        onClick={() => scrollBy("left")}
+        className="
+          hidden md:flex
+          absolute left-0 top-1/2 -translate-y-1/2
+          h-9 w-9 items-center justify-center
+          rounded-full border border-slate-200 bg-white/60 backdrop-blur-sm
+          text-slate-500 hover:text-slate-700
+          shadow-sm
+          opacity-0 group-hover:opacity-100
+          transition-opacity duration-300
+        "
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+
+      {/* 오른쪽 버튼 */}
+      <button
+        type="button"
+        onClick={() => scrollBy("right")}
+        className="
+          hidden md:flex
+          absolute right-0 top-1/2 -translate-y-1/2
+          h-9 w-9 items-center justify-center
+          rounded-full border border-slate-200 bg-white/60 backdrop-blur-sm
+          text-slate-500 hover:text-slate-700
+          shadow-sm
+          opacity-0 group-hover:opacity-100
+          transition-opacity duration-300
+        "
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+
       {/* Slider Area */}
       <div
         ref={scrollRef}
@@ -212,7 +266,7 @@ function AchievementsSlider() {
         {ACHIEVEMENTS.map((item, idx) => (
           <div
             key={idx}
-            className="flex-shrink-0 w-[240px] sm:w-[280px] rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden"
+            className="flex-shrink-0 w-[240px] sm:w-[280px] rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-slate-300"
           >
             <div className="aspect-[3/4] w-full bg-slate-100 relative">
               <img
@@ -236,13 +290,14 @@ function AchievementsSlider() {
   )
 }
 
+
 /* -------------------------------------------------------------------------- */
 /* MAIN COMPONENT                               */
 /* -------------------------------------------------------------------------- */
 
 export function About() {
   return (
-    <section id="about" className="w-full bg-slate-50/50 py-24 lg:py-32">
+    <section id="about" className="w-full bg-slate-50/50 pt-10 pb-24 lg:pt-16 lg:py-32 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* ------------------ Header ------------------ */}
         <motion.div
@@ -258,7 +313,7 @@ export function About() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
             <span className="text-xs font-bold tracking-widest text-slate-600">
-              CAREER & SKILLS
+              INTRODUCTION
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
@@ -270,16 +325,13 @@ export function About() {
         </motion.div>
 
         {/* ------------------ Horizontal Timeline (Roadmap) ------------------ */}
-        <div className="mb-30 relative">
-          <div className="mb-8 flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-slate-400" />
-            <h3 className="text-xl md:text-[1.35rem] font-bold text-slate-900">Career Roadmap</h3>
-          </div>
+        <div className="mb-40 relative">
+          
 
           {/* 타임라인 컨테이너: 카드 없음 + 가로선 양 끝까지 */}
           <div className="relative">
             {/* 가로 중심선 (데스크톱) – inset-x-0 로 끝까지 */}
-            <div className="hidden lg:block pointer-events-none absolute left-1/2 top-[46px] -translate-x-1/2 w-screen h-[2px] bg-slate-200 z-0"/>
+            <div className="hidden lg:block pointer-events-none absolute left-1/2 top-[73px] -translate-x-1/2 w-screen h-[2px] bg-slate-200 z-0" />
             {/* 세로선 (모바일) */}
             <div className="lg:hidden absolute left-[27px] top-6 bottom-6 w-[2px] bg-slate-200 z-0" />
 
@@ -299,14 +351,12 @@ export function About() {
                     key={index}
                     variants={fadeInUp}
                     className={`relative flex lg:block items-start gap-4 lg:gap-0 group ${
-                      !isEven ? "lg:pt-[110px]" : ""
+                      isEven ? "lg:pt-[110px]" : ""
                     }`}
                   >
-                    {/* Icon Node – 이전에 마음에 들었다고 한 스타일로 변경 */}
+                    {/* Icon Node */}
                     <div className="relative z-10 flex-shrink-0">
                       <div className="relative h-[46px] flex items-center justify-center">
-                        {/* 바깥 에메랄드 링 + 화이트 테두리 느낌 */}
-                        <div className="absolute h-14 w-14 rounded-full border-[3px] border-emerald-300/70 bg-white/60 shadow-[0_0_0_1px_rgba(15,23,42,0.08)]" />
                         <div
                           className={`relative z-10 flex h-11 w-11 items-center justify-center rounded-full shadow-md transition-transform duration-300 group-hover:scale-105
                             ${
@@ -322,30 +372,34 @@ export function About() {
 
                       {/* 데스크톱에서 노드와 카드 이어주는 짧은 세로선 */}
                       {!isEven && (
-                        <div className="hidden lg:block absolute bottom-full left-1/2 -translate-x-1/2 h-[50px] w-[2px] bg-slate-200 -mb-2" />
+                        <div className="hidden lg:block absolute bottom-full left-1/2 top-[46px] -translate-x-1/2 h-[28px] w-[2px] bg-slate-200 -mb-2" />
                       )}
                       {isEven && (
-                        <div className="hidden lg:block absolute top-full left-1/2 -translate-x-1/2 h-[30px] w-[2px] bg-slate-200" />
+                        <div className="hidden lg:block absolute top-full mt-[-83px] left-1/2 -translate-x-1/2 h-[40px] w-[2px] bg-slate-200" />
                       )}
                     </div>
 
                     {/* Content Card */}
                     <div
-                      className={`
-                        flex-1 lg:mt-6 lg:text-center lg:px-2
-                        ${!isEven ? "lg:-mt-[190px]" : ""}
-                      `}
-                    >
-                      <span className="inline-block text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md mb-2">
-                        {item.period}
-                      </span>
-                      <h4 className="text-[16px] font-bold text-slate-900 leading-tight mb-1">
-                        {item.title}
-                      </h4>
-                      <p className="text-sm text-slate-500 leading-relaxed break-keep">
-                        {item.description}
-                      </p>
-                    </div>
+  className={`
+    flex-1 lg:text-center lg:px-2
+    ${
+      isEven
+        ? "lg:translate-y-3" // ✅ 짝수 노드만 위로 당기기 (약 4rem 위로)
+        : "lg:mt-10"           // ✅ 홀수 노드는 기존 위치 유지
+    }
+  `}
+>
+  <span className="inline-block text-[15px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md mb-3">
+    {item.period}
+  </span>
+  <h4 className="text-[18px] font-bold text-slate-900 leading-tight mb-3">
+    {item.title}
+  </h4>
+  <p className="text-[15px] text-slate-500 leading-relaxed break-keep">
+    {item.description}
+  </p>
+</div>
                   </motion.div>
                 )
               })}
@@ -354,10 +408,11 @@ export function About() {
         </div>
 
         {/* ------------------ Core Skills (With Bars) ------------------ */}
-        <div className="mb-43">
+        <div className="mb-25">
           <div className="mb-8 flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-slate-400" />
-            <h3 className="text-xl md:text-[1.35rem] font-bold text-slate-900">Core Competencies</h3>
+            <h3 className="text-[35px] font-bold text-slate-900">
+              Core Competencies
+            </h3>
           </div>
 
           <motion.div
@@ -382,7 +437,7 @@ export function About() {
                     <h4 className="text-lg font-bold text-slate-900">{skill.title}</h4>
                   </div>
 
-                  <p className="text-[15px] text-slate-600 leading-relaxed mb-6 h-[84px] md:h-[100px]">
+                  <p className="text-[16px] text-slate-600 leading-relaxed mb-6 h-[84px] md:h-[100px]">
                     {skill.description}
                   </p>
 
@@ -398,7 +453,7 @@ export function About() {
                     </div>
                     <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                       <motion.div
-                        className="h-full bg-slate-800"
+                        className="h-full bg-emerald-600"
                         initial={{ width: 0 }}
                         whileInView={{ width: `${skill.percentage}%` }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
@@ -411,60 +466,159 @@ export function About() {
           </motion.div>
         </div>
 
-        {/* ------------------ Achievements Slider ------------------ */}
-        <motion.div
-          className="mb-45"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeInUp}
-        >
-          <div className="mb-8 flex items-center gap-2">
-            <Award className="w-5 h-5 text-slate-400" />
-            <h3 className="text-xl md:text-[1.35rem] font-bold text-slate-900">
-              Achievements & Certifications
-            </h3>
-          </div>
-          <AchievementsSlider />
-        </motion.div>
-
         {/* ------------------ About Me & Hobbies ------------------ */}
 <motion.div
-          className="mt-4 mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeInUp}
-          custom={0.12}
-        >
-          <h3 className="text-3xl md:text-[2.1rem] font-bold text-slate-900 mb-8">
-            About Me
-          </h3>
+  className="mt-4 border-t border-slate-200 pt-14"
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+  variants={fadeInUp}
+>
+  <h3 className="text-3xl md:text-[2.1rem] font-bold text-slate-900 mb-10">
+    About Me
+  </h3>
 
-          <div className="space-y-5">
-            {STORY_PARAGRAPHS.map((para, i) => (
-              <p key={i} className="text-lg text-slate-600 leading-relaxed">
-                {para}
-              </p>
-            ))}
-          </div>
+  {/* 2x2 정사각형 카드 레이아웃 */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          <div className="mt-12 pt-8 border-t border-slate-200">
-            <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6">
-              Hobbies & Interests
-            </h4>
-            <div className="flex flex-wrap gap-3">
-              {HOBBIES.map((hobby, i) => (
-                <span
-                  key={i}
-                  className="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-medium text-slate-700"
-                >
-                  {hobby}
-                </span>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+    {/* 1. 부동산에 대한 관점 */}
+    <div className="
+  p-7 rounded-2xl bg-white border border-slate-200
+  shadow-sm flex flex-col justify-between min-h-[260px]
+  transition-all duration-300
+  hover:shadow-[0_8px_22px_rgba(16,185,129,0.12)]
+  hover:border-emerald-700/50
+"
+>
+      <div>
+        <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+          📌 부동산에 대한 관점
+        </h4>
+        <p className="text-[16px] text-slate-600 leading-relaxed mb-2">
+          상업용 부동산의 가치는 단순한 입지나 물리적 요소가 아니라{" "}
+          <span className="font-semibold text-emerald-700">
+            운영 방식·임대 구조·자본 구조가 어떻게 설계되느냐
+          </span>
+          에 따라 비로소 자산의 진짜 가치가 결정된다고 생각합니다.
+        </p>
+        <p className="text-[16px] text-slate-600 leading-relaxed mt-5">
+          동일한 건물이라도{" "}
+          <span className="font-semibold text-emerald-700">
+            임대 전략과 비용 구조가 어떻게 짜여 있는지
+          </span>
+          에 따라 수익성이 크게 달라질 수 있다는 점을 여러 프로젝트와 사례를 통해 직접 경험했습니다.
+        </p>
+      </div>
+    </div>
+
+    {/* 2. 전환점이 된 경험 (기존 내용 유지) */}
+    <div className="
+  p-7 rounded-2xl bg-white border border-slate-200
+  shadow-sm flex flex-col justify-between min-h-[260px]
+  transition-all duration-300
+  hover:shadow-[0_8px_22px_rgba(16,185,129,0.12)]
+  hover:border-emerald-700/50
+"
+>
+      <div>
+        <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+          ✨ 전환점이 된 경험
+        </h4>
+        <p className="text-[16px] text-slate-600 leading-relaxed mb-3">
+          {STORY_PARAGRAPHS[1]}
+        </p>
+        <p className="text-[16px] text-slate-600 leading-relaxed">
+          {STORY_PARAGRAPHS[2]}
+        </p>
+      </div>
+    </div>
+
+    {/* 3. 강점과 분석 스킬 */}
+    <div className="
+  p-7 rounded-2xl bg-white border border-slate-200
+  shadow-sm flex flex-col justify-between min-h-[260px]
+  transition-all duration-300
+  hover:shadow-[0_8px_22px_rgba(16,185,129,0.12)]
+  hover:border-emerald-700/50
+"
+>
+      <div>
+        <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+          📊 강점과 분석 스킬
+        </h4>
+        <p className="text-[16px] text-slate-600 leading-relaxed mb-2">
+          저는{" "}
+          <span className="font-semibold text-emerald-700">
+            Excel 모델링, DCF, Cap-rate/NOI 분석
+          </span>
+          과 같은 정량적 분석과{" "}
+          <span className="font-semibold text-emerald-700">
+            입지·수요·법규·임대전략을 해석
+          </span>
+          하는 정성적 분석을 함께 다루는 것을 강점으로 삼고 있습니다.
+        </p>
+        <p className="text-[16px] text-slate-600 leading-relaxed mb-2">
+          신탁사 인턴십을 통해 회계 전표 처리, 등기·계약 관련 문서 정리, 대외문 작성 등{" "}
+          <span className="font-semibold text-slate-900">
+            실무 전반의 흐름
+          </span>
+          을 직접 경험했습니다.
+        </p>
+        <p className="text-[16px] text-slate-600 leading-relaxed">
+          이 과정에서{" "}
+          <span className="font-semibold text-emerald-700">
+            회계·법무·자금 흐름이 하나의 가치사슬로 연결되는 구조
+          </span>
+          를 이해하게 되었고, 자연스럽게{" "}
+          <span className="font-semibold text-slate-900">
+            대외 커뮤니케이션 역량
+          </span>
+          도 함께 강화할 수 있었습니다.
+        </p>
+      </div>
+    </div>
+
+    {/* 4. 앞으로의 방향성 */}
+    <div className="
+  p-7 rounded-2xl bg-white border border-slate-200
+  shadow-sm flex flex-col justify-between min-h-[260px]
+  transition-all duration-300
+  hover:shadow-[0_8px_22px_rgba(16,185,129,0.12)]
+  hover:border-emerald-700/50
+"
+>
+      <div>
+        <h4 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+          🎯 앞으로의 방향성
+        </h4>
+        <p className="text-[16px] text-slate-600 leading-relaxed mb-2">
+          저는 국내 시장을 넘어 해외 시장에서도 기회를 넓히기 위해 현재{" "}
+          <span className="font-semibold text-emerald-700">
+            영어 스피치와 커뮤니케이션
+          </span>
+          을 지속적으로 훈련하고 있습니다. 이를 바탕으로{" "}
+          <span className="font-semibold text-slate-900">
+            국제적인 부동산 금융 및 자산운용 기회
+          </span>
+          에도 도전할 수 있는 기반을 마련하고자 합니다.
+        </p>
+        <p className="text-[16px] text-slate-600 leading-relaxed mt-5">
+          장기적으로는{" "}
+          <span className="font-semibold text-emerald-700">
+            해외 투자·개발·운용 분야
+          </span>
+          에서 경험을 쌓으며,{" "}
+          <span className="font-semibold text-slate-900">
+            국제 무대에서 활약하는 부동산 금융·자산운용 전문가
+          </span>
+          로 성장하는 것을 목표로 하고 있습니다.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</motion.div>
+
       </div>
     </section>
   )

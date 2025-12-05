@@ -131,7 +131,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-slate-100 py-24 sm:py-32"
+      className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-slate-200 py-24 sm:py-32"
     >
       {/* BACKGROUND */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -164,10 +164,10 @@ export function Contact() {
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-3">
-            Get In Touch
+            Contact & Collaboration
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl leading-relaxed">
-            새로운 프로젝트 제안이나 협업 기회는 언제나 환영합니다.
+            새로운 프로젝트 제안이나 협업 기회는 언제나 환영합니다!
             <br className="hidden sm:block" />
             편하신 방법으로 연락해 주세요.
           </p>
@@ -186,7 +186,7 @@ export function Contact() {
             <div className="p-7 sm:p-10 lg:p-12 flex flex-col justify-center">
               {/* Profile Header */}
               <div className="flex items-center gap-5 mb-7">
-                <div className="relative w-18 h-18 sm:w-20 sm:h-20 flex-shrink-0 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shadow-inner">
+                <div className="relative w-50 h-50 sm:w-20 sm:h-20 flex-shrink-0 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shadow-inner">
                   <Image
                     src="/seoyeon_character.png"
                     alt="Profile"
@@ -209,22 +209,26 @@ export function Contact() {
 
               {/* Info List */}
               <div className="space-y-4 mb-7">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-600">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
-                      Email
-                    </p>
-                    <a
-                      href={`mailto:${CONTACT_INFO.email}`}
-                      className="text-base sm:text-lg font-semibold text-slate-900 hover:text-emerald-600 transition-colors"
-                    >
-                      {CONTACT_INFO.email}
-                    </a>
-                  </div>
-                </div>
+                <div className="mb-4">
+  <div className="flex items-center gap-4 rounded-2xl bg-slate-900 px-4 py-3 sm:px-6 sm:py-4 text-slate-50 border border-slate-800">
+    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-800 border border-slate-700/80">
+      <Mail className="w-5 h-5 text-emerald-400" />
+    </div>
+
+    <div className="flex-1 min-w-0">
+      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-[0.18em] mb-1">
+        Email
+      </p>
+      <a
+        href={`mailto:${CONTACT_INFO.email}`}
+        className="inline-flex items-center gap-1.5 text-sm sm:text-base font-semibold text-slate-50 hover:text-emerald-300 transition-colors break-all"
+      >
+        {CONTACT_INFO.email}
+        <ArrowRight className="w-4 h-4" />
+      </a>
+    </div>
+  </div>
+</div>
 
                 <div className="flex items-start gap-3">
                   <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 text-slate-600">
@@ -311,16 +315,16 @@ export function Contact() {
 
         {/* ------------------ FOOTER MESSAGE ------------------ */}
         <motion.div
-          className="mt-20 text-center space-y-1.5"
+          className="mt-30 text-center space-y-1.5"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeInUp}
         >
-          <p className="text-xl sm:text-2xl font-serif italic text-slate-700">
-            "제 작업과 여정을 찾아와 주셔서 감사합니다."
+          <p className="text-xl sm:text-2xl text-slate-700">
+            제 작업과 여정을 찾아와 주셔서 감사합니다!
           </p>
-          <p className="text-xs sm:text-sm text-slate-400 uppercase tracking-widest">
+          <p className="text-s sm:text-sm text-slate-600 uppercase tracking-widest">
             앞으로의 가능성을 함께 만들어갈 수 있기를 기대합니다.
           </p>
         </motion.div>
