@@ -313,7 +313,7 @@ export function About() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
             <span className="text-xs font-bold tracking-widest text-slate-600">
-              INTRODUCTION
+              ABOUT
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">

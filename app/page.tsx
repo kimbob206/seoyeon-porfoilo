@@ -1,30 +1,19 @@
-"use client"
-
-import { NavBar } from "@/components/navbar"
+import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { About } from "@/components/about"
 import { Projects } from "@/components/projects"
 import { Contact } from "@/components/contact"
-import { Home, User, FolderOpen, Mail } from "lucide-react"
+import { Footer } from "@/components/footer"
 
-export default function Page() {
+export default function Home() {
   return (
-    <main>
-      {/* 상단 네비게이션 바 */}
-      <NavBar
-        items={[
-          { name: "홈", url: "#hero", icon: Home },
-          { name: "소개", url: "#about", icon: User },
-          { name: "프로젝트", url: "#projects", icon: FolderOpen },
-          { name: "연락", url: "#contact", icon: Mail },
-        ]}
-      />
-
-      {/* 섹션들 */}
+    <main className="min-h-screen">
+      <Header />
       <Hero />
       <About />
       <Projects />
       <Contact />
+      <Footer />
     </main>
   )
 }
