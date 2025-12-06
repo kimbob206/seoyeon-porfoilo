@@ -228,7 +228,7 @@ export function Hero() {
                   <img
                     src="/profile.jpg"
                     alt="배서연"
-                    className="h-full w-full object-cover transform hover:scale-110 transition-transform duration-500"
+                    className="h-full w-full object-cover transform transition-transform duration-500"
                   />
                 </div>
                 <div className="pt-1">
