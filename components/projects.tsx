@@ -250,7 +250,7 @@ export function Projects() {
   </h2>
 
   <p className="text-xl md:text-[1.35rem] text-slate-600 max-w-2xl leading-relaxed">
-    주요 프로젝트를 정량적 결과와 함께 정리한 포트폴리오입니다.
+    주요 협업 프로젝트를 정량적 결과와 함께 정리한 포트폴리오입니다.
   </p>
 </header>
 

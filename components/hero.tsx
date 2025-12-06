@@ -203,7 +203,7 @@ export function Hero() {
               <a
                 href="/Seoyeon_Resume.pdf"
                 download
-                className="group inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-8 py-4 text-[15px] font-semibold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-400 hover:-translate-y-1"
+                className="group inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-8 py-4 text-[15px] font-semibold text-slate-700 shadow-sm transition-all"
               >
                 <Download className="h-4 w-4 text-slate-500 group-hover:text-slate-700" />
                 Resume
