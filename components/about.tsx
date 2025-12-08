@@ -40,26 +40,25 @@ const TIMELINE_DATA = [
   {
     icon: Users,
     title: (
-    <>
-      부동산 학회 및
-      <br />
-      연합 학술 활동
-    </>
-  ),
+      <>
+        부동산 학회 및
+        <br />
+        연합 학술 활동
+      </>
+    ),
     period: "2024.03 - 2025.01",
-    description:
-      "건국·단국·중앙대 연합학술제 우수프로젝트 선정",
+    description: "건국·단국·중앙대 연합학술제 우수프로젝트 선정",
     category: "Activity",
   },
   {
     icon: Briefcase,
     title: (
-    <>
-      무궁화신탁 인턴십 및
-      <br />
-      금융교육 이수
-    </>
-  ),
+      <>
+        무궁화신탁 인턴십 및
+        <br />
+        금융교육 이수
+      </>
+    ),
     period: "2025.07 - 09",
     description: "타임금융교육원 부동산운용 직무교육",
     category: "Career",
@@ -67,12 +66,12 @@ const TIMELINE_DATA = [
   {
     icon: Star,
     title: (
-    <>
-      서울부동산포럼
-      <br />
-      장학생 선정
-    </>
-  ),
+      <>
+        서울부동산포럼
+        <br />
+        장학생 선정
+      </>
+    ),
     period: "2025.11",
     description: "제13회 우수 장학생 선정",
     category: "Award",
@@ -128,9 +127,33 @@ const ACHIEVEMENTS = [
     image: "/money.png",
   },
   {
-    title: "임장보고서 최우수상 상장",
+    title: "학회 임장보고서 최우수상 상장",
     period: "2024.04",
     image: "/wow.jpg",
+  },
+]
+
+// 👉 public/wow.jpg, public/money.jpg, public/urid.jpg, public/time.jpg
+const CERTIFICATIONS = [
+  {
+    id: "wow",
+    src: "/wow.jpg",
+    label: "임장보고서 최우수상 상장",
+  },
+  {
+    id: "money",
+    src: "/money.png",
+    label: "서울부동산포럼 장학증서",
+  },
+  {
+    id: "urid",
+    src: "/urid.png",
+    label: "URID 수료증",
+  },
+  {
+    id: "time",
+    src: "/time.png",
+    label: "금융직무특화교육 수료증",
   },
 ]
 
@@ -360,7 +383,7 @@ export function About() {
                         <div
                           className={`relative z-10 flex h-11 w-11 items-center justify-center rounded-full shadow-md transition-transform duration-300 group-hover:scale-105
                             ${
-                              item.isFuture
+                              (item as any).isFuture
                                 ? "bg-slate-50 text-slate-700 border-2 border-dashed border-slate-400"
                                 : "bg-slate-900 text-white border-[3px] border-white"
                             }
@@ -385,8 +408,8 @@ export function About() {
     flex-1 lg:text-center lg:px-2
     ${
       isEven
-        ? "lg:translate-y-3" // ✅ 짝수 노드만 위로 당기기 (약 4rem 위로)
-        : "lg:mt-10"           // ✅ 홀수 노드는 기존 위치 유지
+        ? "lg:translate-y-3"
+        : "lg:mt-10"
     }
   `}
 >
@@ -408,7 +431,7 @@ export function About() {
         </div>
 
         {/* ------------------ Core Skills (With Bars) ------------------ */}
-        <div className="mb-25">
+        <div className="mb-16">
           <div className="mb-8 flex items-center gap-2">
             <h3 className="text-[35px] font-bold text-slate-900">
               Core Competencies
@@ -465,6 +488,44 @@ export function About() {
             })}
           </motion.div>
         </div>
+
+        {/* ------------------ Scholarships & Certifications (단순 4장 나열) ------------------ */}
+        <motion.div
+          className="mb-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+        >
+          <Card className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-6 sm:px-6 sm:py-8 shadow-sm">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <h3 className="text-[35px] font-bold text-slate-900">
+                Scholarships & Certifications
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+              {CERTIFICATIONS.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col items-center gap-2"
+                >
+                  {/* A4 비율 유지 (210:297), 배경색 최소화 */}
+                  <div className="relative w-full aspect-[210/297] bg-white border border-slate-200 rounded-lg overflow-hidden">
+                    <img
+                      src={item.src}
+                      alt={item.label}
+                      className="absolute inset-0 h-full w-full object-contain"
+                    />
+                  </div>
+                  <p className="text-[16px] sm:text-[17px] text-slate-600 text-center truncate w-full">
+                    {item.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </motion.div>
 
         {/* ------------------ About Me & Hobbies ------------------ */}
 <motion.div
